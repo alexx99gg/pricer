@@ -1,0 +1,19 @@
+spring:
+  mvc.pathmatch.matching-strategy: ant_path_matcher
+  mvc.format.date-time: yyyy-MM-dd-HH.mm.ss
+  datasource:
+    password: admin123
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server.port: 8080
+logging:
+  level:
+    org.springframework: ERROR
+    com.sillycom.pricer: INFO
+  file:
+    name: pricer.log
