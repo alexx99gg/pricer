@@ -1,0 +1,29 @@
+spring:
+  mvc.format.date-time: yyyy-MM-dd-HH.mm.ss
+  datasource:
+    password: admin123
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server.port: 8080
+springdoc:
+  packagesToScan: com.sillycom.pricer.infrastructure.controller
+  pathsToMatch: /price/**
+logging:
+  level:
+    org.springframework: ERROR
+    com.sillycom.pricer: INFO
+  file:
+    name: pricer.log
+
+---
+
+spring:
+  config.activate.on-profile: docker
+  datasource:
+    url: jdbc:postgresql://pricer_db:5432/postgres
+server.port: 8080

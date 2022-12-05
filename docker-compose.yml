@@ -1,9 +1,19 @@
 version: '3'
 
 services:
-  db:
+  pricer-api:
+    container_name: pricer-api
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    build:
+      context: pricer-api
+      dockerfile: Dockerfile
+    image: pricer-api:latest
+    ports:
+      - "8080:8080"
+  pricer_db:
     image: postgres
-    container_name: "db"
+    container_name: "pricer_db"
     ports:
       - "5432:5432"
     environment:
@@ -13,8 +23,8 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
 
-  pgadmin:
-    container_name: pgadmin4_container
+  pricer_pgadmin4:
+    container_name: "pricer_pgadmin4"
     image: dpage/pgadmin4
     restart: always
     environment:
