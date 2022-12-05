@@ -14,8 +14,8 @@ To deploy the project and the necessary DB, please follow the Dockerized deploym
 5. `docker-compose up`
 
 pricer-api exposed at http://localhost:8080\
+Swagger available at http://localhost:8080/swagger-ui/index.html\
 postgreSQL exposed at localhost:5432 (user: `postgres` password: `admin123`, db: `postgres`)\
-Pgadmin exposed at http://localhost:5050 (user: `admin@admin.com`, password: `root`)\
-Swagger available at http://localhost:8080/swagger-ui/index.html
+Pgadmin exposed at http://localhost:5050 (user: `admin@admin.com`, password: `root`)
 
 This application uses Java 17 version.
