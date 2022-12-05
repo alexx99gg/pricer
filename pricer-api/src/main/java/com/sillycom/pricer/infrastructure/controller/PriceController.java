@@ -27,14 +27,11 @@ public class PriceController {
   private PriceService priceService;
 
   @GetMapping(path = "/price/{brand}/{productId}")
-  // @Cacheable("product-price-by-brand")
   public ResponseEntity<PriceDto> getProductPriceByBrand(@PathVariable Integer brand,
                                                          @PathVariable Integer productId) {
 
-    Instant instant = clock.instant();
-    log.debug("Current date for petition: {}", instant);
-
-    PriceEntity price = priceService.getProductPriceByBrandAndDate(brand, productId, instant);
+    Instant currentInstant = clock.instant();
+    PriceEntity price = priceService.getProductPriceByBrandAndDate(brand, productId, currentInstant);
 
     if (Objects.isNull(price)){
       return ResponseEntity.notFound().build();

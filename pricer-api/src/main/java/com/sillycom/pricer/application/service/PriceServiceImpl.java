@@ -1,12 +1,13 @@
 package com.sillycom.pricer.application.service;
 
-import com.sillycom.pricer.application.comparator.PriceComparator;
+import com.sillycom.pricer.application.comparator.PriceComparatorByPriority;
 import com.sillycom.pricer.domain.entity.PriceEntity;
 import com.sillycom.pricer.domain.repository.PriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class PriceServiceImpl implements PriceService {
@@ -15,26 +16,25 @@ public class PriceServiceImpl implements PriceService {
   private PriceRepository priceRepository;
 
   @Autowired
-  private PriceComparator priceComparator;
+  private PriceComparatorByPriority priceComparatorByPriority;
 
   public PriceEntity getProductPriceByBrandAndDate(Integer brand, Integer productId, Instant instant){
 
-    var prices = priceRepository.getByBrandIdAndProductId(brand, productId);
+    List<PriceEntity> prices = priceRepository.getByBrandIdAndProductId(brand, productId);
 
-    var applyingPrices = prices.parallelStream()
-        .filter(v -> doesPriceApply(v, instant))
-        .sorted(priceComparator)
+    List<PriceEntity> applyingPricesSortedByPriority = prices.parallelStream()
+        .filter(price -> doesPriceApply(price, instant))
+        .sorted(priceComparatorByPriority)
         .toList();
 
-    if (applyingPrices.isEmpty()){
+    if (applyingPricesSortedByPriority.isEmpty()){
       return null;
     }
 
-    return applyingPrices.get(0);
+    return applyingPricesSortedByPriority.get(0);
   }
 
   private boolean doesPriceApply(PriceEntity price, Instant instant) {
-
     return (price.getStartDate().toInstant().isBefore(instant) && price.getEndDate().toInstant().isAfter(instant));
   }
 }
